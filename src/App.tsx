@@ -2,6 +2,39 @@ import React from "react";
 import "./App.css";
 
 function App() {
+  let tabs = document.querySelectorAll(".tab");
+  let indicator = document.querySelector(".indicator") as HTMLElement;
+  let panels = document.querySelectorAll(".tab-panel");
+
+  indicator.style.width = tabs[0].getBoundingClientRect().width + "px";
+  indicator.style.left =
+    tabs[0].getBoundingClientRect().left -
+    tabs[0].parentElement!.getBoundingClientRect().left +
+    "px";
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      let tabTarget = tab.getAttribute("aria-controls");
+
+      indicator.style.width = tab.getBoundingClientRect().width + "px";
+      indicator.style.left =
+        tab.getBoundingClientRect().left -
+        tab.parentElement!.getBoundingClientRect().left +
+        "px";
+
+      panels.forEach((panel) => {
+        let panelId = panel.getAttribute("id");
+
+        if (tabTarget === panelId) {
+          panel.classList.remove("invisible", "opacity-100");
+          panel.classList.add("visible", "opacity-100");
+        } else {
+          panel.classList.add("invisible", "opacity-0");
+        }
+      });
+    });
+  });
+
   return (
     <div className="min-h-screen flex items-center bg-gradient-to-br from-purple-200 to-indigo-400">
       <div className="max-w-3xl mx-auto px-8 sm:px-0">
@@ -9,9 +42,9 @@ function App() {
           <div
             role="tablist"
             aria-label="tabs"
-            className="relative w-max mx-auto h-12 grid grid-cols-3 items-center px-[3xl] rounded-full bg-gray-900/20 overflow-hidden shadow-2xl shadow-900/20 transition"
+            className="relative w-max mx-auto h-12 grid grid-cols-3 items-center px-[3px] rounded-full bg-gray-900/20 overflow-hidden shadow-2xl shadow-900/20 transition"
           >
-            <div className="absolute top-0 left-0 rounded-full bg-white shadow-md"></div>
+            <div className="absolute indicator h-11 my-auto top-0 bottom-0 left-0 w-32 rounded-full bg-white shadow-md"></div>
             <button
               role="tab"
               aria-selected="true"
