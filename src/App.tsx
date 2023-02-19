@@ -1,39 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 
 function App() {
-  let tabs = document.querySelectorAll(".tab");
-  let indicator = document.querySelector(".indicator") as HTMLElement;
-  let panels = document.querySelectorAll(".tab-panel");
+  let tabs: NodeListOf<Element>;
+  let indicator: HTMLElement;
+  let panels: NodeListOf<Element>;
 
-  indicator.style.width = tabs[0].getBoundingClientRect().width + "px";
-  indicator.style.left =
-    tabs[0].getBoundingClientRect().left -
-    tabs[0].parentElement!.getBoundingClientRect().left +
-    "px";
+  useEffect(() => {
+   tabs = document.querySelectorAll(".tab");
+   indicator = document.querySelector(".indicator") as HTMLElement;
+   panels = document.querySelectorAll(".tab-panel");
+   
+   indicator.style.width = tabs[0].getBoundingClientRect().width + "px";
+   indicator!.style.left =
+     tabs[0].getBoundingClientRect().left -
+     tabs[0].parentElement!.getBoundingClientRect().left +
+     "px";
 
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      let tabTarget = tab.getAttribute("aria-controls");
-
-      indicator.style.width = tab.getBoundingClientRect().width + "px";
-      indicator.style.left =
-        tab.getBoundingClientRect().left -
-        tab.parentElement!.getBoundingClientRect().left +
-        "px";
-
-      panels.forEach((panel) => {
-        let panelId = panel.getAttribute("id");
-
-        if (tabTarget === panelId) {
-          panel.classList.remove("invisible", "opacity-100");
-          panel.classList.add("visible", "opacity-100");
-        } else {
-          panel.classList.add("invisible", "opacity-0");
-        }
-      });
-    });
-  });
+   tabs.forEach((tab) => {
+     tab.addEventListener("click", () => {
+       let tabTarget = tab.getAttribute("aria-controls");
+ 
+       indicator.style.width = tab.getBoundingClientRect().width + "px";
+       indicator.style.left =
+         tab.getBoundingClientRect().left -
+         tab.parentElement!.getBoundingClientRect().left +
+         "px";
+ 
+       panels.forEach((panel) => {
+         let panelId = panel.getAttribute("id");
+ 
+         if (tabTarget === panelId) {
+           panel.classList.remove("invisible", "opacity-100");
+           panel.classList.add("visible", "opacity-100");
+         } else {
+           panel.classList.add("invisible", "opacity-0");
+         }
+       });
+     });
+   });
+  }, [])
 
   return (
     <div className="min-h-screen flex items-center bg-gradient-to-br from-purple-200 to-indigo-400">
