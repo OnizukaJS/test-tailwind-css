@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
+import Tab from "./components/Tab";
 
 function App() {
   let tabs: NodeListOf<Element>;
@@ -7,39 +8,39 @@ function App() {
   let panels: NodeListOf<Element>;
 
   useEffect(() => {
-   tabs = document.querySelectorAll(".tab");
-   indicator = document.querySelector(".indicator") as HTMLElement;
-   panels = document.querySelectorAll(".tab-panel");
-   
-   indicator.style.width = tabs[0].getBoundingClientRect().width + "px";
-   indicator!.style.left =
-     tabs[0].getBoundingClientRect().left -
-     tabs[0].parentElement!.getBoundingClientRect().left +
-     "px";
+    tabs = document.querySelectorAll(".tab");
+    indicator = document.querySelector(".indicator") as HTMLElement;
+    panels = document.querySelectorAll(".tab-panel");
 
-   tabs.forEach((tab) => {
-     tab.addEventListener("click", () => {
-       let tabTarget = tab.getAttribute("aria-controls");
- 
-       indicator.style.width = tab.getBoundingClientRect().width + "px";
-       indicator.style.left =
-         tab.getBoundingClientRect().left -
-         tab.parentElement!.getBoundingClientRect().left +
-         "px";
- 
-       panels.forEach((panel) => {
-         let panelId = panel.getAttribute("id");
- 
-         if (tabTarget === panelId) {
-           panel.classList.remove("invisible", "opacity-100");
-           panel.classList.add("visible", "opacity-100");
-         } else {
-           panel.classList.add("invisible", "opacity-0");
-         }
-       });
-     });
-   });
-  }, [])
+    indicator.style.width = tabs[0].getBoundingClientRect().width + "px";
+    indicator!.style.left =
+      tabs[0].getBoundingClientRect().left -
+      tabs[0].parentElement!.getBoundingClientRect().left +
+      "px";
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        let tabTarget = tab.getAttribute("aria-controls");
+
+        indicator.style.width = tab.getBoundingClientRect().width + "px";
+        indicator.style.left =
+          tab.getBoundingClientRect().left -
+          tab.parentElement!.getBoundingClientRect().left +
+          "px";
+
+        panels.forEach((panel) => {
+          let panelId = panel.getAttribute("id");
+
+          if (tabTarget === panelId) {
+            panel.classList.remove("invisible", "opacity-100");
+            panel.classList.add("visible", "opacity-100");
+          } else {
+            panel.classList.add("invisible", "opacity-0");
+          }
+        });
+      });
+    });
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center bg-gradient-to-br from-purple-200 to-indigo-400">
@@ -51,38 +52,11 @@ function App() {
             className="relative w-max mx-auto h-12 grid grid-cols-3 items-center px-[3px] rounded-full bg-gray-900/20 overflow-hidden shadow-2xl shadow-900/20 transition"
           >
             <div className="absolute indicator h-11 my-auto top-0 bottom-0 left-0 w-32 rounded-full bg-white shadow-md"></div>
-            <button
-              role="tab"
-              aria-selected="true"
-              aria-controls="panel-1"
-              id="tab-1"
-              tabIndex={0}
-              className="relative block h-10 px-6 tab rounded-full"
-            >
-              <span className="text-gray-800">First Tab</span>
-            </button>
+            <Tab selected={true} tabNumber={1} tabIndex={0} title="Fist Tab" />
 
-            <button
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-2"
-              id="tab-2"
-              tabIndex={-1}
-              className="relative block h-10 px-6 tab rounded-full"
-            >
-              <span className="text-gray-800">Second Tab</span>
-            </button>
+            <Tab selected={false} tabNumber={2} tabIndex={-1} title="Second Tab" />
 
-            <button
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-3"
-              id="tab-3"
-              tabIndex={-1}
-              className="relative block h-10 px-6 tab rounded-full"
-            >
-              <span className="text-gray-800">Third Tab</span>
-            </button>
+            <Tab selected={false} tabNumber={3} tabIndex={-1} title="Third Tab" />
           </div>
 
           <div className="mt-6 relative rounded-3xl bg-purple-50">
